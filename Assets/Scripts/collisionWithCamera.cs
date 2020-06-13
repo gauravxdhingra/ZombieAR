@@ -2,49 +2,69 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class collisionWithCamera : MonoBehaviour {
+public class collisionWithCamera : MonoBehaviour
+{
 
     // public GameObject MainCamera;
-	public bool zombieIsThere;
-	float timer;
-	int timeBetweenAttack;
+    public bool zombieIsThere;
+    // public GameObject bloodyScreen;
+    float timer;
+    int timeBetweenAttack;
+    private GameControllerScrpt gameController;
 
-	// Use this for initialization
-	void Start () {
-		timeBetweenAttack = 2;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Use this for initialization
+    void Start()
+    {
+        timeBetweenAttack = 2;
 
-		timer += Time.deltaTime;
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
 
-		if (zombieIsThere && timer >= timeBetweenAttack) 
-		{
-			Attack ();
-		}
-		
-	}
+        if(gameControllerObject!=null){
+            gameController = gameControllerObject.GetComponent <GameControllerScrpt> ();
+        }
+    }
 
-	void OnCollisionEnter (Collision col)
-	{
-		if (col.gameObject.tag == "ARCamera") 
-		{
-			zombieIsThere = true;
-		}
-	}
+    // Update is called once per frame
+    void Update()
+    {
 
-	void OnCollisionExit (Collision col)
-	{
-		if (col.gameObject.tag == "ARCamera") 
-		{
-			zombieIsThere = false;
-		}
-	}
+        timer += Time.deltaTime;
 
-	void Attack()
-	{
-		timer = 0f;
-		GetComponent<Animator> ().Play ("Z_Attack");
-	}
+        if (zombieIsThere && timer >= timeBetweenAttack)
+        {
+            Attack();
+        }
+
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "ARCamera")
+        {
+            zombieIsThere = true;
+        }
+    }
+
+    void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.tag == "ARCamera")
+        {
+            zombieIsThere = false;
+        }
+    }
+
+    void Attack()
+    {
+        timer = 0f;
+        GetComponent<Animator>().Play("Z_Attack");
+        gameController.zombieAttack(zombieIsThere);
+        // bloodyScreen.gameObject.SetActive(true);
+        // StartCoroutine(wait2sec());
+    }
+
+    // IEnumerator wait2sec()
+    // {
+    //     yield return new WaitForSeconds(2f); 
+    //     bloodyScreen.gameObject.SetActive(false);
+    // }
 }
