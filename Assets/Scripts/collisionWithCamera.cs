@@ -11,6 +11,7 @@ public class collisionWithCamera : MonoBehaviour
     float timer;
     int timeBetweenAttack;
     private GameControllerScrpt gameController;
+    AudioSource attackSound;
 
     // Use this for initialization
     void Start()
@@ -19,9 +20,13 @@ public class collisionWithCamera : MonoBehaviour
 
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
 
-        if(gameControllerObject!=null){
-            gameController = gameControllerObject.GetComponent <GameControllerScrpt> ();
+        if (gameControllerObject != null)
+        {
+            gameController = gameControllerObject.GetComponent<GameControllerScrpt>();
         }
+
+        AudioSource[] audio = GetComponents<AudioSource> ();
+        attackSound = audio[0];
     }
 
     // Update is called once per frame
@@ -60,6 +65,7 @@ public class collisionWithCamera : MonoBehaviour
         gameController.zombieAttack(zombieIsThere);
         // bloodyScreen.gameObject.SetActive(true);
         // StartCoroutine(wait2sec());
+        attackSound.Play();
     }
 
     // IEnumerator wait2sec()
